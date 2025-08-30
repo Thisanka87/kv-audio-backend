@@ -16,7 +16,7 @@ app.use((req,res,next)=>{
     {
         token =  token.replace("Bearer ","")
 
-        jwt.verify(token,"kvSecretKey19",(err,decoded)=>{
+        jwt.verify(token,process.env.JWT_SECRET,(err,decoded)=>{
             console.log(err)
             if(err!=null)
             {
