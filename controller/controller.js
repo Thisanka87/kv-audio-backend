@@ -1,0 +1,60 @@
+import userModel from "../models/user.js";
+import bcrypt from "bcrypt"
+import Jwt from "jsonwebtoken"
+
+export function registerUser(req,res){
+
+    const data = req.body
+    data.password = bcrypt.hashSync(data.password,10)
+    const newUser = new userModel(data)
+
+    newUser.save().then(()=>{
+
+        res.json({message:"user registration successfully"})
+
+    }).catch((error)=>{
+        res.status(500).json({message:"user registration failed"})
+    })
+}
+
+
+export function loginUser(req,res){
+
+    const data = req.body
+    userModel.findOne({
+        email : data.email,
+    }).then(
+        (user)=>{
+            if(user==null)
+            {
+                res.status(500).json({error:"user not found"})
+            }else{
+               // res.json({message:"user found",user:user})
+
+                const isPasswordCorrect = bcrypt.compareSync(data.password,user.password)
+
+                if(isPasswordCorrect)
+
+                    
+                {
+                    
+               const token =  Jwt.sign({
+                    email : user.email,
+                    firstName : user.firstName,
+                    lastName : user.lastName,
+                    password : user.password,
+                    role : user.role
+                },"kvSecretKey19")
+
+
+                    res.json({message:"Login successful",token : token})
+                }else{
+                    res.status(400).json({error:"Login Failed"})
+                }
+            }
+        }
+    )
+
+
+
+}
