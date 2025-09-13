@@ -9,8 +9,7 @@ const userSchema = mongoose.Schema({
 
      password : {
         type : String,
-        required : true,
-        unique : true
+        required : true
     },
 
      firstName : {
@@ -43,10 +42,10 @@ const userSchema = mongoose.Schema({
         
     },
 
-    profilePicthure : {
+    profilePicture : {
         type : String,
         required : true,
-        defaut : "https://static.vecteezy.com/system/resources/thumbnails/009/734/564/small_2x/default-avatar-profile-icon-of-social-media-user-vector.jpg"
+        default : "https://static.vecteezy.com/system/resources/thumbnails/009/734/564/small_2x/default-avatar-profile-icon-of-social-media-user-vector.jpg"
         
     },
 

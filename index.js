@@ -10,23 +10,27 @@ const app = express()
 dotenv.config()
 app.use(bodyParser.json());
 
-app.use((req,res,next)=>{
+app.use((req, res, next) => {
+    let token = req.header("Authorization");
 
-    let token = req.header("Authorization")
-    if(token!= null)
-    {
-        token =  token.replace("Bearer ","")
+    if (token) {
+        console.log(token)
+        if (token.startsWith("Bearer ")) {
+            token = token.split(" ")[1];
+        }
 
-        jwt.verify(token,process.env.JWT_SECRET,(err,decoded)=>{
-            console.log(err)
-            if(err!=null)
-            {
-                req.user = decoded
+        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+            if (err) {
+                console.log("Invalid token:", err.message);
+            } else {
+                req.user = decoded; // attach user info
+                console.log("User verified:", decoded);
             }
-        })
+        });
     }
-next()
-})
+
+    next();
+});
 
 
 const mongoUrl = process.env.MONGO_URL
