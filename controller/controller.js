@@ -29,9 +29,11 @@ export function loginUser(req,res){
             {
                 res.status(500).json({error:"user not found"})
             }else{
-               // res.json({message:"user found",user:user})
+    
+              //  return
 
                 const isPasswordCorrect = bcrypt.compareSync(data.password,user.password)
+                //console.log("hi")
 
                 if(isPasswordCorrect)
 
@@ -44,7 +46,7 @@ export function loginUser(req,res){
                     lastName : user.lastName,
                     password : user.password,
                     role : user.role,
-                     profilePicthure : user.profilePicthure
+                     profilePicthure : user. profilePicture
                 },process.env.JWT_SECRET)
 
 
@@ -58,4 +60,16 @@ export function loginUser(req,res){
 
 
 
+}
+
+export function isCustomer (req,res){
+ let isCustomer= false
+ if(req.user!=null){
+    if(req.user.rolle==="customer"){
+        isCustomer=true
+    }
+ }
+
+return isCustomer
+    
 }

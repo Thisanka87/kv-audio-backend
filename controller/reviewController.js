@@ -1,28 +1,29 @@
-import reveiwModel from "../models/reveiw.js";
+import reviewModel from "../models/reveiw.js";
 
-export function addReveiw(req,res)
-{
-    if(req.user == null)
-    {
-        res.status(401).json({message:"please login & try again"})
-    }
+export async function addReview(req, res) {
+  if (!req.user) {
+    return res.status(401).json({ message: "please login & try again" });
+  }
 
-     const data = req.body
+  try {
+    const data = req.body;
 
-     data.name = req.user.firstName + ""+ req.user.lastName,
-     data.email = req.user.email,
-     data.profilePicthure = req.user.profilePicthure
+    // overwrite with user info
+    data.name = `${req.user.firstName} ${req.user.lastName}`;
+    data.email = req.user.email;
+    data. profilePicture = req.user. profilePicture;
 
-     const newReview = new reveiwModel(data)
+    const newReview = new reviewModel(data);
+    await newReview.save();
 
-     newReview.save().then(()=>{
-        res.json({message:"review added successfully"})
-     }).catch(()=>{
-        res.status(400).json({message:"review addition failed"})
-     })
-
-
-
+    res.json({ message: "review added successfully" });
+  } catch (err) {
+    console.error("Review save error:", err.message); // 👈 log reason
+    res.status(400).json({
+      message: "review addition failed",
+      error: err.message,
+    });
+  }
 }
 
 
