@@ -85,3 +85,22 @@ if(user.role == "admin")
    }     else  {  res.status(401).json({message:"you are not authorized to perform this action"}) }
 
   }
+
+
+  export function approveReview(req,res)
+  {
+    let email = req.params.email; 
+    if(req.user==null || req.user.role != "admin")
+    {
+         res.status(401).json({message:"please login & try again"})
+    }
+    //return
+    if(req.user.role == "admin")
+    {
+        reviewModel.updateOne({email:email},{$set:{isApproved:true}}).then(()=>{
+            res.json({message:"review approved successfully"})
+        }).catch((error)=>{
+            res.status(500).json({message:"review approval failed"})
+        })
+    }
+  }
