@@ -32,7 +32,7 @@ export function getReviews(req,res)
     const user = req.user
 if(user==null || user.role!= "admin")
 {
-    reveiwModel.find({isApproved : true}).then((reviews)=>{
+    reviewModel.find({isApproved : true}).then((reviews)=>{
         res.json(reviews)
     })
 
@@ -42,10 +42,46 @@ return
 
 if(user.role == "admin")
 {
-    reveiwModel.find().then((reviews)=>{
+    reviewModel.find().then((reviews)=>{
         res.json(reviews)
     })
 }
 
 }
+   export function deleteReview(req,res)
+   {
+    let email = req.params.email;
+    if(req.user==null)
+    {
+         res.status(401).json({message:"please login & try again"})
+    }
+   
+   //return 
 
+   if(req.user.role == "admin" )
+   {
+    reviewModel.deleteOne({email : email}).then(()=>{
+        res.json({message:"review deleted successfully"})
+    }).catch((error)=>{
+        res.status(500).json({message:"review delete failed"})
+    })
+   }
+   //return
+   if(req.user.role = "customer")
+   {
+
+    if(req.user.email = email)
+    {
+        reviewModel.deleteOne({email: email}).then(()=>{
+            res.json({message:"review deleted successfully"})
+        }   ).catch((error)=>{
+            res.status(500).json({message:"review delete failed"})
+        }               
+
+   ) }
+
+
+
+   }     else  {  res.status(401).json({message:"you are not authorized to perform this action"}) }
+
+  }
