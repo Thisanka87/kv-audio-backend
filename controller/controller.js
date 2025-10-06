@@ -62,14 +62,13 @@ export function loginUser(req,res){
 
 }
 
-export function isCustomer (req,res){
- let isCustomer= false
- if(req.user!=null){
-    if(req.user.rolle==="customer"){
-        isCustomer=true
-    }
- }
 
-return isCustomer
     
+export function isItAdmin(req)
+{
+    let isAdmin = false;
+    if(req.user!= null && req.user.role == "admin") {
+        isAdmin = true;
+    }
+    return isAdmin;
 }
