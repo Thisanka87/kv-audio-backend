@@ -46,7 +46,8 @@ export function loginUser(req,res){
                     lastName : user.lastName,
                     password : user.password,
                     role : user.role,
-                     profilePicthure : user. profilePicture
+                     profilePicthure : user. profilePicture,
+                     phoneNumber : user.phoneNumber,
                 },process.env.JWT_SECRET)
 
 
@@ -71,4 +72,15 @@ export function isItAdmin(req)
         isAdmin = true;
     }
     return isAdmin;
+}
+
+export function isItCustomer(req)
+{
+    let isCustomer = false;
+    if(req.user!=null && req.user.role == "customer") {
+        isCustomer = true;
+    } 
+    return isCustomer;      
+
+
 }
