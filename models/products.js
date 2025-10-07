@@ -35,6 +35,17 @@ const productSchema = mongoose.Schema({
         default : true
     },
 
+    price : {
+        type : Number,
+        required : true,
+    },  
+
+    image : {
+        type : [String],
+        required : true,
+        default : ["https://www.pngall.com/wp-content/uploads/5/No-Image-PNG.png"]
+    }
+
 })
 
 const productModel = mongoose.model("products",productSchema)
